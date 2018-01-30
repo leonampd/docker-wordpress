@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  
+  wordpress:
+    image: wordpress:${WORDPRESS_TAG:-latest}
+    ports: 
+      - 80:80
+    env_file: .env
+    volumes:
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/wp-content/plugins
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:${MYSQL_TAG:-5.7}
+    env_file: .env
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
